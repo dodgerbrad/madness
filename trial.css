@@ -250,3 +250,60 @@ tbody tr.picked-row:hover {
   padding: 0 20px;
 }
 
+/* --- Mobile-Specific Fixes --- */
+@media screen and (max-width: 600px) {
+  body {
+      padding: 10px; /* Reduce padding on small screens */
+  }
+
+  h1 {
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+  }
+
+  /* Make buttons easier to tap (minimum 44px height) */
+  button {
+      width: 100%; /* Stack buttons vertically on mobile */
+      margin: 8px 0;
+      padding: 15px;
+      font-size: 1.1rem;
+  }
+
+  #undo-button {
+      margin-left: 0; /* Remove the 30px left margin for stacking */
+  }
+
+  /* Handle Table Scrolling on Mobile */
+  #draft-controls {
+      overflow-x: auto; /* Allow horizontal scroll if table is too wide */
+      padding: 1rem;
+  }
+
+  table {
+      font-size: 0.9rem; /* Slightly smaller text for table data */
+  }
+
+  th, td {
+      padding: 8px 5px; /* Tighter padding for mobile */
+  }
+
+  /* Adjust Sticky Header Offsets for Mobile */
+  #global-pick-area {
+      top: -1px; /* Ensure no gaps */
+      padding: 15px;
+  }
+
+  thead th {
+      top: 130px; /* Offset to sit below your sticky pick area on mobile */
+  }
+}
+
+/* Touch Device Optimization */
+@media (hover: none) {
+  button:active {
+      background-color: var(--ncaa-accent);
+      transform: scale(0.98);
+  }
+}
+
+
