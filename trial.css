@@ -1,0 +1,252 @@
+/* --- Global Variables & Color Scheme (NCAA Theme) --- */
+:root {
+  --ncaa-primary: #003366;   /* Dark Blue */
+  --ncaa-accent: #C8102E;    /* Red Accent */
+  --background: #e3e6e5;    /* Light Gray background */
+  --card-bg: #ffffff;      /* White card backgrounds */
+  --text: #333;
+  --success: #d4edda;
+  --picked-red: #fde8e8; /* Very light red */
+  --border-red: #f8b4b4; /* Slightly darker red for border */
+}
+
+/* --- Body and Base Typography --- */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  padding: 20px;
+  
+  margin: 0;
+  /* Ensure the body is the main scrolling container */
+  overflow-y: scroll; 
+  min-height: 100vh;
+}
+
+h1 {
+  font-family: 'Georgia', serif;
+  color: var(--ncaa-primary);
+  font-size: 2.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 3px solid var(--ncaa-accent);
+  display: inline-block;
+  padding-bottom: 10px;
+  width: 100%;
+  max-width: 800px;
+}
+
+h2, h3 {
+  color: var(--ncaa-primary);
+}
+
+/* --- Card Styling for Controls (Setup & Draft) --- */
+#setup-controls, #draft-controls {
+  background: linear-gradient(145deg, #dcdada, #b6b2b2);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 6px 6px 12px #d1d1d1, -6px -6px 12px #ffffff;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 800px;
+  border-top: 5px solid var(--ncaa-accent);
+  box-sizing: border-box;
+}
+
+/* --- STICKY FIXES: Separate the Sticky Area from the parent container --- */
+
+/* Remove sticky from parent #draft-controls (which was causing issues) */
+#draft-controls {
+    position: static; 
+}
+
+/* Apply Sticky behavior to the specific area we want to follow the scroll */
+#global-pick-area {
+    position: sticky;
+    top: 0; /* Sticks to the top of the viewport */
+    z-index: 100; /* Stays above other content */
+    background-color: var(--background);
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+
+/* --- Inputs & Buttons --- */
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 15px;
+  color: var(--text);
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  border: 2px solid var(--ncaa-primary);
+}
+
+button {
+  background-color: var(--ncaa-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  
+  width: auto;
+  margin-right: 5px; /* Added margin for side-by-side buttons */
+}
+
+button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#undo-button { 
+  background-color: #dc3545; 
+  margin-left: 30px;
+}
+#finish-button { background-color: #28a745; }
+
+
+/* --- Table Styling (Draft Order & Main Table) --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--background);
+  margin-top: 15px;
+  border-radius: 8px;
+  /* Removed overflow: hidden from here, as it conflicts with sticky headers */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+thead {
+  background-color: var(--ncaa-accent);
+  color: white;
+}
+
+/* Make the table headers sticky as well */
+thead th {
+    position: sticky;
+    top: 90px; /* Sticks slightly below the main global pick area */
+    background-color: var(--ncaa-accent);
+    z-index: 90;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:nth-child(even) {
+  background-color: var(--card-bg);
+}
+
+tbody tr {
+  transition: background-color 0.3s;
+}
+
+/* --- Status Displays --- */
+#current-bettor-display {
+  color: var(--ncaa-accent);
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 15px;
+}
+
+#statusMessage {
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+#last-pick-display {
+  padding: 10px;
+  border-radius: 6px;
+  background-color: var(--success);
+  border-left: 4px solid var(--ncaa-accent);
+  min-height: 20px;
+  opacity: 0; /* Hidden until the first pick */
+}
+
+/* The animation that will run every time we add this class */
+.animate-flash {
+  animation: flash-update 0.8s ease-out;
+  opacity: 1 !important; /* Keep it visible after the flash */
+}
+
+@keyframes flash-update {
+  0% { 
+      background-color: #fff3cd; /* Bright yellow flash */
+      transform: scale(1.02); 
+      opacity: 1;
+  }
+  100% { 
+      background-color: var(--success); 
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+
+button:active {
+
+  transform: translateY(2px);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
+}
+
+
+/* Add this class to your trial.css file */
+tbody tr.picked-row {
+  background-color: var(--picked-red) !important; /* Uses the light red variable you defined */
+  color: var(--text); /* Keep the text readable */
+  transition: background-color 0.3s;
+}
+
+/* Ensure the hover effect still works on picked rows, maybe making it slightly different */
+tbody tr.picked-row:hover {
+  background-color: var(--border-red) !important; /* Slightly darker red on hover */
+}
+
+/* Ensure the target row stops scrolling BEFORE it goes under the fixed header */
+.animate-flash { /* Or whatever class your row uses for styling */
+  scroll-margin-top: 150px; 
+}
+
+/* --- SCROLL OFFSET FIX --- */
+
+/* This ensures the JavaScript scroll-to function stops scrolling 
+   before the row goes underneath your two sticky headers. */
+   tbody tr {
+    /* Your main sticky header (#global-pick-area) sits at top: 0. 
+       Your table header (thead th) sits at top: 90px. 
+       We use the total height they occupy as the scroll margin. */
+    scroll-margin-top: 100px; /* Use a value slightly larger than your 90px offset */
+}
+
+.content-wrapper {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto; /* This centers everything */
+  padding: 0 20px;
+}
+
