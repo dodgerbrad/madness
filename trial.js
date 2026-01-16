@@ -332,7 +332,7 @@ function getSerpentineNumber(pickNum, totalBettors) {
 function refreshAllDisplays() {
     if (currentPickIndex >= totalPicks) {
         document.getElementById('current-bettor-display').textContent = "Draft Complete!";
-        document.getElementById('global-pick-area').style.display = 'none';
+        
         document.getElementById('finish-button').style.display = 'inline-block';
         return;
     }
@@ -387,7 +387,10 @@ function sendAllPicksToGoogle() {
     const submitBtn = document.getElementById('finish-button');
     submitBtn.style.backgroundColor = "#4CAF50";
     submitBtn.textContent = "Submitted ✓";
-    // Optional: submitBtn.disabled = true; // Prevents double submission
+    document.getElementById('global-pick-area').style.display = 'none';
+    submitBtn.disabled = true; // Prevents double submission
+    const undoButton = document.getElementById("undo-button");
+    undoButton.disabled = true;
 }
 
 
