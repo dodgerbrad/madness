@@ -1,13 +1,12 @@
 /* --- Global Variables & Color Scheme (NCAA Theme) --- */
 :root {
-  --ncaa-primary: #003366;   /* Dark Blue */
-  --ncaa-accent: #C8102E;    /* Red Accent */
-  --background: #e3e6e5;    /* Light Gray background */
-  --card-bg: #ffffff;      /* White card backgrounds */
-  --text: #333;
-  --success: #d4edda;
-  --picked-red: #fde8e8; /* Very light red */
-  --border-red: #f8b4b4; /* Slightly darker red for border */
+  --ncaa-primary: #003366;   /* Classic Navy */
+  --ncaa-accent: #C8102E;    /* Classic Red */
+  --background: #f4f6f8;     /* Softer Light Gray */
+  --card-bg: #ffffff;        /* Crisp White */
+  --text: #2d3436;           /* Professional Charcoal */
+  --success: #e1f5fe;        /* Soft Blue Success */
+  --picked-red: #fff5f5;     /* Very subtle red tint */
 }
 
 /* --- Body and Base Typography --- */
@@ -26,12 +25,11 @@ body {
 h1 {
   font-family: 'Georgia', serif;
   color: var(--ncaa-primary);
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 3px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  
   border-bottom: 3px solid var(--ncaa-accent);
   display: inline-block;
   padding-bottom: 10px;
@@ -45,16 +43,20 @@ h2, h3 {
 
 /* --- Card Styling for Controls (Setup & Draft) --- */
 #setup-controls, #draft-controls {
-  background: linear-gradient(145deg, #dcdada, #b6b2b2);
+  background: #ffffff; /* Replaced the heavy gradient with solid white */
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 6px 6px 12px #d1d1d1, -6px -6px 12px #ffffff;
-  margin-bottom: 2rem;
-  width: 100%;
-  max-width: 800px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 51, 102, 0.08);
+
+  /* KEY CHANGES FOR CENTERING AND SIZE */
+  margin: 0 auto 2rem; /* Centers the div horizontally */
+  width: 90%;          /* Uses 90% of screen until it hits the max-width */
+  max-width: 600px;    /* Reduced from 800px to make it look less bulky */
+  
   border-top: 5px solid var(--ncaa-accent);
   box-sizing: border-box;
 }
+
 
 /* --- STICKY FIXES: Separate the Sticky Area from the parent container --- */
 
@@ -65,15 +67,18 @@ h2, h3 {
 
 /* Apply Sticky behavior to the specific area we want to follow the scroll */
 #global-pick-area {
-    position: sticky;
-    top: 0; /* Sticks to the top of the viewport */
-    z-index: 100; /* Stays above other content */
-    background-color: var(--background);
-    padding: 15px 0;
-    border-bottom: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    padding: 10px;
-    border-radius: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  /* CHANGE: Use a solid color instead of rgba transparency */
+  background: var(--background); 
+  padding: 10px;
+  border-bottom: 2px solid var(--ncaa-primary); /* Adding a solid border helps the visual separation */
+  border-radius: 0 0 8px 8px;
+  /* Optional: Remove backdrop-filter as it is no longer needed for solid colors */
+  -webkit-backdrop-filter: none; 
+  backdrop-filter: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Adds depth so it looks 'above' the table */
 }
 
 
@@ -146,8 +151,8 @@ thead {
 /* Make the table headers sticky as well */
 thead th {
     position: sticky;
-    top: 90px; /* Sticks slightly below the main global pick area */
-    background-color: var(--ncaa-accent);
+    top: 95px; /* Sticks slightly below the main global pick area */
+    background-color: var(--ncaa-primary);
     z-index: 90;
 }
 
@@ -165,6 +170,7 @@ tbody tr {
   transition: background-color 0.3s;
 }
 
+
 /* --- Status Displays --- */
 #current-bettor-display {
   color: var(--ncaa-accent);
@@ -181,9 +187,12 @@ tbody tr {
 
 #last-pick-display {
   padding: 10px;
+  background: #e3f2fd;
   border-radius: 6px;
   background-color: var(--success);
-  border-left: 4px solid var(--ncaa-accent);
+  border-left: 5px solid var(--ncaa-primary);
+  color: var(--ncaa-primary);
+  font-weight: 500;
   min-height: 20px;
   opacity: 0; /* Hidden until the first pick */
 }
@@ -220,6 +229,8 @@ tbody tr.picked-row {
   background-color: var(--picked-red) !important; /* Uses the light red variable you defined */
   color: var(--text); /* Keep the text readable */
   transition: background-color 0.3s;
+  color: #a0a0a0; /* Muted text for drafted players */
+  text-decoration: line-through; /* Visual "crossed off" look */
 }
 
 /* Ensure the hover effect still works on picked rows, maybe making it slightly different */
@@ -305,5 +316,6 @@ tbody tr.picked-row:hover {
       transform: scale(0.98);
   }
 }
+
 
 

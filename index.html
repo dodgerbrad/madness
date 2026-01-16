@@ -9,8 +9,10 @@
     
     <!-- iOS App Capability -->
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Madness Draft">
+    <link rel="manifest" href="manifest.json">
 
     <!-- High-quality iPhone icon (180x180 PNG) -->
     <link rel="apple-touch-icon" href="Madness-touch.png">
@@ -50,7 +52,7 @@
             <select id="team-selector" style="padding: 10px; font-size: 16px; min-width: 200px;"></select>
 
             <button onclick="recordCurrentPickGlobal()">Submit Pick</button>
-            <button id="undo-button" onclick="undoLastPick()" disabled>Undo Last Pick</button>
+            
             <div id="last-pick-display" style="margin-top: 10px; color: gray;"></div>
         </div>
 
@@ -79,6 +81,7 @@
             <button id="finish-button" onclick="sendAllPicksToGoogle()" style="display: none;">Submit Draft to
                 Sheet</button>
             <button onclick="finishAndClearDraft()">Clear Everything</button>
+            <button id="undo-button" onclick="undoLastPick()" disabled>Undo Last Pick</button>
         </div>
 
     </div>
