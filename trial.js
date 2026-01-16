@@ -1,7 +1,7 @@
 // --- CONFIGURATION & GLOBALS ---
 const depURL = "https://script.google.com/macros/s/AKfycbyz7fSuE0DdFBWCAQQTNCBn__480wbKxjqCZHKxTiM35zsC63NCER7WgT4_0SQwO3uWnw/exec";
 const STORAGE_KEY = "ncaaDraftProgress_2026_global";
-
+const get = id => document.getElementById(id);
 let bettors = [];
 let totalRounds = 0;
 let totalPicks = 0;
@@ -74,6 +74,8 @@ async function initializeDraftOrder() {
         row.innerHTML = `<td>${i}</td><td>${draftOrder[i - 1]}</td><td class="team-picked-cell"></td>`;
         tableBody.appendChild(row);
     }
+    populateTeamFilter(); 
+    filterPlayersByTeam();
 
     document.getElementById('setup-controls').style.display = 'none';
     document.getElementById('draft-controls').style.display = 'block';
@@ -163,6 +165,8 @@ function recordCurrentPickGlobal() {
     
     // Optional: Focus the selector immediately for the next pick
     teamSelector.focus();
+    populateTeamFilter(); 
+    filterPlayersByTeam(); 
 }
 
 
@@ -310,6 +314,8 @@ function loadDraftFromLocal() {
         // Use state.totalPicks from your saved localStorage object
         totalDisplay.textContent = state.totalPicks || 0;
     }
+    populateTeamFilter(); 
+    filterPlayersByTeam(); 
     return true;
 
 }
@@ -399,3 +405,42 @@ window.initializeDraftOrder = initializeDraftOrder;
 window.recordCurrentPickGlobal = recordCurrentPickGlobal;
 window.undoLastPick = undoLastPick;
 window.finishAndClearDraft = finishAndClearDraft;
+
+
+// Function to extract unique teams from your Team-Player list
+function populateTeamFilter() {
+    const teamFilter = get("team-filter");
+    // Extract unique team names from the 'Duke-Boozer' format
+    const uniqueTeams = [...new Set(availableTeams.map(p => p.split('-')[0]))].sort();
+    
+    teamFilter.innerHTML = '<option value="">-- All Teams --</option>';
+    uniqueTeams.forEach(team => {
+        const opt = document.createElement('option');
+        opt.value = opt.text = team;
+        teamFilter.appendChild(opt);
+    });
+}
+
+// Function called every time the Team dropdown changes
+function filterPlayersByTeam() {
+    const teamFilter = get("team-filter");
+    const playerSelect = get("team-selector");
+    const selectedTeam = teamFilter.value;
+    
+    // Filter availableTeams based on the chosen prefix
+    const filteredPlayers = selectedTeam === "" 
+        ? availableTeams 
+        : availableTeams.filter(p => p.startsWith(selectedTeam + "-"));
+
+    // Re-populate only the players matching that team
+    playerSelect.innerHTML = `<option value="">-- Select Player (${filteredPlayers.length}) --</option>`;
+    filteredPlayers.sort().forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        option.textContent = name;
+        playerSelect.appendChild(option);
+    });
+}
+
+// Update your initialization to include the team filter setup
+// Add populateTeamFilter() inside initializeDraftOrder() or loadDraftFromLocal()

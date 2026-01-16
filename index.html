@@ -6,7 +6,7 @@
     <!-- Essential for mobile responsiveness -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>2026 NCAA Bracket Draft</title>
-    
+
     <!-- iOS App Capability -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -16,7 +16,7 @@
 
     <!-- High-quality iPhone icon (180x180 PNG) -->
     <link rel="apple-touch-icon" href="Madness-touch.png">
-    
+
     <link rel="stylesheet" href="trial.css">
     <link rel="icon" type="image/png" href="Madness.png">
 </head>
@@ -24,68 +24,74 @@
 
 <body>
     <div class="content-wrapper"> <!-- ADDED WRAPPER -->
-    <h1>Madness Draft 2026</h1>
+        <h1>Madness Draft 2026</h1>
 
-    <!-- Setup Controls (Visible First) -->
-    <div id="setup-controls">
-        <h2>Draft Setup</h2>
-        <label for="masterName">Enter Commissioner Name:</label>
-        <input type="text" id="masterName" placeholder="Your Name">
-        <label for="bettorNamesInput">Enter Bettor Names in Draft Order (comma separated):</label>
-        <input type="text" id="bettorNamesInput" placeholder="Alice, Bob, Charlie">
-        <label for="numRows">Total Rounds (e.g., 10):</label>
-        <input type="number" id="numRows" value="4" min="1">
-        <button onclick="initializeDraftOrder()">Start Draft</button>
-    </div>
-
-    <!-- Draft Controls (Hidden until ready) -->
-    <div id="draft-controls" style="display: none;">
-        <h2>Active Draft Controls</h2>
-
-        <!-- GLOBAL PICKING CONTROLS -->
-        <div id="global-pick-area">
-            <p>Current Picker: <strong id="current-bettor-display"></strong> (Pick <strong
-                    id="current-pick-number-display"></strong> of <strong id="total-picks-display"></strong>)</p>
-
-            <label for="team-selector">Select Team:</label>
-            <!-- We will populate this single select dropdown -->
-            <select id="team-selector" style="padding: 10px; font-size: 16px; min-width: 200px;"></select>
-
-            <button onclick="recordCurrentPickGlobal()">Submit Pick</button>
-            
-            <div id="last-pick-display" style="margin-top: 10px; color: gray;"></div>
+        <!-- Setup Controls (Visible First) -->
+        <div id="setup-controls">
+            <h2>Draft Setup</h2>
+            <label for="masterName">Enter Commissioner Name:</label>
+            <input type="text" id="masterName" placeholder="Your Name">
+            <label for="bettorNamesInput">Enter Bettor Names in Draft Order (comma separated):</label>
+            <input type="text" id="bettorNamesInput" placeholder="Alice, Bob, Charlie">
+            <label for="numRows">Total Rounds (e.g., 10):</label>
+            <input type="number" id="numRows" value="10" min="1">
+            <button onclick="initializeDraftOrder()">Start Draft</button>
         </div>
 
+        <!-- Draft Controls (Hidden until ready) -->
+        <div id="draft-controls" style="display: none;">
+            <h2>Active Draft Controls</h2>
+
+            <!-- GLOBAL PICKING CONTROLS -->
+            <div id="global-pick-area">
+                <p>Current Picker: <strong id="current-bettor-display"></strong> (Pick <strong
+                        id="current-pick-number-display"></strong> of <strong id="total-picks-display"></strong>)</p>
+                
+                        <!-- NEW: Team Filter -->
+                <label for="team-filter">Filter by Team:</label>
+                <select id="team-filter" onchange="filterPlayersByTeam()">
+                    <option value="">-- All Teams --</option>
+                </select>
+
+                <label for="team-selector">Select Player:</label>
+                <!-- We will populate this single select dropdown -->
+                <select id="team-selector" style="padding: 10px; font-size: 16px; min-width: 200px;"></select>
+
+                <button onclick="recordCurrentPickGlobal()">Submit Pick</button>
+
+                <div id="last-pick-display" style="margin-top: 10px; color: gray;"></div>
+            </div>
 
 
-        <!-- The main drafting table where picks are recorded -->
-        <table id="dynamicTable">
-            <thead>
-                <tr>
-                    <th>Pick No.</th>
-                    <th>Bettor Name</th>
-                    <th>Player Selected</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- JS inserts all pick rows here -->
-            </tbody>
-        </table>
 
-        <!-- Action Buttons for Undo/Finish -->
-        <!-- Action Buttons for Undo/Finish -->
-        <div style="margin-top: 20px;">
-            <!-- ADD THIS LINE BELOW -->
-            
+            <!-- The main drafting table where picks are recorded -->
+            <table id="dynamicTable">
+                <thead>
+                    <tr>
+                        <th>Pick No.</th>
+                        <th>Bettor Name</th>
+                        <th>Player Selected</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- JS inserts all pick rows here -->
+                </tbody>
+            </table>
 
-            <button id="finish-button" onclick="sendAllPicksToGoogle()" style="display: none;">Submit Draft to
-                Sheet</button>
-            <button onclick="finishAndClearDraft()">Clear Everything</button>
-            <button id="undo-button" onclick="undoLastPick()" disabled>Undo Last Pick</button>
+            <!-- Action Buttons for Undo/Finish -->
+            <!-- Action Buttons for Undo/Finish -->
+            <div style="margin-top: 20px;">
+                <!-- ADD THIS LINE BELOW -->
+
+
+                <button id="finish-button" onclick="sendAllPicksToGoogle()" style="display: none;">Submit Draft to
+                    Sheet</button>
+                <button onclick="finishAndClearDraft()">Clear Everything</button>
+                <button id="undo-button" onclick="undoLastPick()" disabled>Undo Last Pick</button>
+            </div>
+
         </div>
-
-    </div>
-</div> <!-- CLOSED WRAPPER -->
+    </div> <!-- CLOSED WRAPPER -->
 
     <input type="hidden" id="hiddenMaster">
     <input type="hidden" id="hiddenGamblers">

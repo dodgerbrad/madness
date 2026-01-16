@@ -1,4 +1,4 @@
-/* --- Global Variables & Color Scheme (NCAA Theme) --- */
+/* --- 1. Global Variables & Color Scheme (NCAA Theme) --- */
 :root {
   --ncaa-primary: #003366;   /* Classic Navy */
   --ncaa-accent: #C8102E;    /* Classic Red */
@@ -9,16 +9,14 @@
   --picked-red: #fff5f5;     /* Very subtle red tint */
 }
 
-/* --- Body and Base Typography --- */
+/* --- 2. Body and Base Typography --- */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--background);
   color: var(--text);
   padding: 20px;
-  
   margin: 0;
-  /* Ensure the body is the main scrolling container */
-  overflow-y: scroll; 
+  overflow-y: scroll; /* Ensure the body is the main scrolling container */
   min-height: 100vh;
 }
 
@@ -31,8 +29,11 @@ h1 {
   letter-spacing: 3px;
   
   border-bottom: 3px solid var(--ncaa-accent);
-  display: inline-block;
   padding-bottom: 10px;
+  
+  /* FIXES FOR CENTERING */
+  display: block;           /* Change from inline-block to block */
+  margin: 0 auto 20px;      /* Centers block element and adds bottom spacing */
   width: 100%;
   max-width: 800px;
 }
@@ -41,48 +42,44 @@ h2, h3 {
   color: var(--ncaa-primary);
 }
 
-/* --- Card Styling for Controls (Setup & Draft) --- */
+.content-wrapper {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto; /* Centers the wrapper */
+  padding: 0 20px;
+}
+
+/* --- 3. Card Styling & Layout --- */
 #setup-controls, #draft-controls {
-  background: #ffffff; /* Replaced the heavy gradient with solid white */
+  background: var(--card-bg);
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 51, 102, 0.08);
-
-  /* KEY CHANGES FOR CENTERING AND SIZE */
-  margin: 0 auto 2rem; /* Centers the div horizontally */
-  width: 90%;          /* Uses 90% of screen until it hits the max-width */
-  max-width: 600px;    /* Reduced from 800px to make it look less bulky */
-  
+  margin: 0 auto 2rem;
+  width: 90%;
+  max-width: 1000px;
   border-top: 5px solid var(--ncaa-accent);
   box-sizing: border-box;
+  position: static; /* Ensure parent container isn't sticky itself */
 }
 
-
-/* --- STICKY FIXES: Separate the Sticky Area from the parent container --- */
-
-/* Remove sticky from parent #draft-controls (which was causing issues) */
-#draft-controls {
-    position: static; 
-}
-
-/* Apply Sticky behavior to the specific area we want to follow the scroll */
+/* --- 4. Sticky Header for Current Picks --- */
 #global-pick-area {
   position: sticky;
   top: 0;
   z-index: 100;
-  /* CHANGE: Use a solid color instead of rgba transparency */
   background: var(--background); 
   padding: 10px;
-  border-bottom: 2px solid var(--ncaa-primary); /* Adding a solid border helps the visual separation */
+  border-bottom: 2px solid var(--ncaa-primary);
   border-radius: 0 0 8px 8px;
-  /* Optional: Remove backdrop-filter as it is no longer needed for solid colors */
-  -webkit-backdrop-filter: none; 
-  backdrop-filter: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Adds depth so it looks 'above' the table */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex; 
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; 
 }
 
-
-/* --- Inputs & Buttons --- */
+/* --- 5. Inputs & Buttons --- */
 label {
   display: block;
   font-weight: bold;
@@ -92,13 +89,13 @@ label {
 
 input, select {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 5px 0 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 6px;
   box-sizing: border-box;
   font-size: 1rem;
   border: 2px solid var(--ncaa-primary);
+  background-color: white; /* Ensure background is white */
 }
 
 button {
@@ -110,9 +107,8 @@ button {
   cursor: pointer;
   font-weight: bold;
   margin-top: 10px;
-  
   width: auto;
-  margin-right: 5px; /* Added margin for side-by-side buttons */
+  margin-right: 5px;
 }
 
 button:hover:not(:disabled) {
@@ -125,6 +121,11 @@ button:disabled {
   opacity: 0.6;
 }
 
+button:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
+}
+
 #undo-button { 
   background-color: #dc3545; 
   margin-left: 30px;
@@ -132,15 +133,15 @@ button:disabled {
 #finish-button { background-color: #28a745; }
 
 
-/* --- Table Styling (Draft Order & Main Table) --- */
+/* --- 6. Table Styling --- */
 table {
   width: 100%;
   border-collapse: collapse;
   background: var(--background);
   margin-top: 15px;
   border-radius: 8px;
-  /* Removed overflow: hidden from here, as it conflicts with sticky headers */
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  font-size: 0.9rem;
 }
 
 thead {
@@ -148,16 +149,15 @@ thead {
   color: white;
 }
 
-/* Make the table headers sticky as well */
 thead th {
     position: sticky;
-    top: 95px; /* Sticks slightly below the main global pick area */
+    top: 95px; /* Sits below the main global pick area */
     background-color: var(--ncaa-primary);
     z-index: 90;
 }
 
 th, td {
-  padding: 12px;
+  padding: 8px 12px;
   text-align: left;
   border-bottom: 1px solid #eee;
 }
@@ -168,45 +168,49 @@ tbody tr:nth-child(even) {
 
 tbody tr {
   transition: background-color 0.3s;
+  /* Ensure smooth scrolling stops above sticky headers */
+  scroll-margin-top: 100px; 
+}
+
+tbody tr.picked-row {
+  background-color: var(--picked-red) !important;
+  color: #a0a0a0;
+  text-decoration: line-through;
 }
 
 
-/* --- Status Displays --- */
+/* --- 7. Status Displays & Animations --- */
 #current-bettor-display {
   color: var(--ncaa-accent);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
-  display: block;
-  margin-bottom: 15px;
-}
-
-#statusMessage {
-  margin-top: 20px;
-  border-radius: 5px;
+  display: inline;
+  margin-bottom: 0;
+  margin-right: 10px;
 }
 
 #last-pick-display {
   padding: 10px;
-  background: #e3f2fd;
   border-radius: 6px;
   background-color: var(--success);
   border-left: 5px solid var(--ncaa-primary);
   color: var(--ncaa-primary);
   font-weight: 500;
   min-height: 20px;
-  opacity: 0; /* Hidden until the first pick */
+  opacity: 0;
+  margin-top: 10px;
+  flex-basis: 100%; /* Takes full width below other controls */
 }
 
-/* The animation that will run every time we add this class */
 .animate-flash {
   animation: flash-update 0.8s ease-out;
-  opacity: 1 !important; /* Keep it visible after the flash */
+  opacity: 1 !important;
 }
 
 @keyframes flash-update {
   0% { 
-      background-color: #fff3cd; /* Bright yellow flash */
-      transform: scale(1.02); 
+      background-color: #fff3cd;
+      transform: scale(1.01);
       opacity: 1;
   }
   100% { 
@@ -216,55 +220,33 @@ tbody tr {
   }
 }
 
+/* --- 8. Media Queries (Responsiveness) --- */
 
-button:active {
+/* Desktop Specific Adjustments (min-width: 768px) */
+@media screen and (min-width: 768px) {
+  #team-selector,#team-filter {
+      width: 400px;
+      margin: 0 15px;
+      flex-grow: 1;
+      font-size: 1.1rem;
+      padding: 12px;
+  }
 
-  transform: translateY(2px);
-  box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
+  #global-pick-area button {
+      padding: 12px 30px;
+      font-size: 1rem;
+  }
+
+  #global-pick-area p {
+      white-space: nowrap; 
+      margin: 0;
+  }
 }
 
-
-/* Add this class to your trial.css file */
-tbody tr.picked-row {
-  background-color: var(--picked-red) !important; /* Uses the light red variable you defined */
-  color: var(--text); /* Keep the text readable */
-  transition: background-color 0.3s;
-  color: #a0a0a0; /* Muted text for drafted players */
-  text-decoration: line-through; /* Visual "crossed off" look */
-}
-
-/* Ensure the hover effect still works on picked rows, maybe making it slightly different */
-tbody tr.picked-row:hover {
-  background-color: var(--border-red) !important; /* Slightly darker red on hover */
-}
-
-/* Ensure the target row stops scrolling BEFORE it goes under the fixed header */
-.animate-flash { /* Or whatever class your row uses for styling */
-  scroll-margin-top: 150px; 
-}
-
-/* --- SCROLL OFFSET FIX --- */
-
-/* This ensures the JavaScript scroll-to function stops scrolling 
-   before the row goes underneath your two sticky headers. */
-   tbody tr {
-    /* Your main sticky header (#global-pick-area) sits at top: 0. 
-       Your table header (thead th) sits at top: 90px. 
-       We use the total height they occupy as the scroll margin. */
-    scroll-margin-top: 100px; /* Use a value slightly larger than your 90px offset */
-}
-
-.content-wrapper {
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto; /* This centers everything */
-  padding: 0 20px;
-}
-
-/* --- Mobile-Specific Fixes --- */
-@media screen and (max-width: 600px) {
+/* Mobile Specific Adjustments (max-width: 767px) */
+@media screen and (max-width: 767px) {
   body {
-      padding: 10px; /* Reduce padding on small screens */
+      padding: 10px;
   }
 
   h1 {
@@ -272,7 +254,6 @@ tbody tr.picked-row:hover {
       letter-spacing: 1px;
   }
 
-  /* Make buttons easier to tap (minimum 44px height) */
   button {
       width: 100%; /* Stack buttons vertically on mobile */
       margin: 8px 0;
@@ -281,41 +262,32 @@ tbody tr.picked-row:hover {
   }
 
   #undo-button {
-      margin-left: 0; /* Remove the 30px left margin for stacking */
+      margin-left: 0;
   }
 
-  /* Handle Table Scrolling on Mobile */
   #draft-controls {
       overflow-x: auto; /* Allow horizontal scroll if table is too wide */
       padding: 1rem;
   }
 
-  table {
-      font-size: 0.9rem; /* Slightly smaller text for table data */
-  }
-
-  th, td {
-      padding: 8px 5px; /* Tighter padding for mobile */
-  }
-
-  /* Adjust Sticky Header Offsets for Mobile */
   #global-pick-area {
-      top: -1px; /* Ensure no gaps */
+      top: -1px;
       padding: 15px;
   }
 
   thead th {
       top: 130px; /* Offset to sit below your sticky pick area on mobile */
   }
+  
+  #global-pick-area p, #global-pick-area label, #global-pick-area select {
+      flex-basis: 100%; /* Stack controls vertically on mobile */
+  }
 }
 
-/* Touch Device Optimization */
+/* Touch Device Optimization (Active states vs hover) */
 @media (hover: none) {
   button:active {
       background-color: var(--ncaa-accent);
       transform: scale(0.98);
   }
 }
-
-
-
